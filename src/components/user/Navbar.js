@@ -3,50 +3,56 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useRef } from 'react';
 import styled from 'styled-components'
+import { Link } from 'react-router-dom';
+
 const Navbar = () => {
-    const navRef = useRef();
+  const navRef = useRef();
 
-    const showNavBar = () => {
-        navRef.current.classList.toggle("responsive-nav");
-    }
+  const showNavBar = () => {
+    navRef.current.classList.toggle("responsive-nav");
+  }
 
-    return (
-        <Main>
-            <Logo>PET HEAVEN</Logo>
-            <Nav ref={navRef}>
-                <NavLink href="/#">Adopt</NavLink>
-                <NavLink href="/#">Pet Release</NavLink>
-                <NavLink href="/#">About us</NavLink>
-                <NavLink href="/#">Get Started</NavLink>
-                <NavLink href="/#">Contact Us</NavLink>
-                <CloseButton className='nav-btn nav-close-btn' onClick={showNavBar}>
-                    <ClearIcon />
-                </CloseButton>
-            </Nav>
-            <Button className='nav-btn' onClick={showNavBar}>
-                <MenuIcon />
-            </Button>
-        </Main>
-    );
+  return (
+    <Main>
+      <NavLink to='/'>
+        <Logo>Pet Heaven</Logo>
+      </NavLink>
+      <Nav ref={navRef}>
+        <NavLink to='/adopt'>Adopt</NavLink>
+        <NavLink href="/#">Pet Release</NavLink>
+        <NavLink href="/#">About us</NavLink>
+        <NavLink href="/#">Get Started</NavLink>
+        <NavLink href="/#">Contact Us</NavLink>
+        <CloseButton className='nav-btn nav-close-btn' onClick={showNavBar}>
+          <ClearIcon />
+        </CloseButton>
+      </Nav>
+      <Button className='nav-btn' onClick={showNavBar}>
+        <MenuIcon />
+      </Button>
+    </Main>
+  );
 }
 
 
 const Logo = styled.h1`
   color: #bb7b6b;
-  font-family: 'Abril Fatface', cursive;
   font-weight: 400;
+  font-family: "Caprasimo", serif;
 `;
 
 const Main = styled.header`
-display: flex;
-align-items: center;
-justify-content: space-between;
-height: 80px;
-padding: 0 2rem;
-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  padding: 0 2rem;
+  color: #000;
+  position: relative; /* Ensure z-index works as intended */
+  z-index: 10; /* Higher z-index to stay above carousel */
 `
 
-const NavLink = styled.a`
+const NavLink = styled(Link)`
 margin: 0 2rem;
 color: #000;
 text-decoration: none;
@@ -100,6 +106,8 @@ const Nav = styled.nav`
 
   &.responsive-nav {
     transform: translateY(0);
+    background-color: #ffffff; /* Background color when collapsed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for effect */
   }
 `;
 
