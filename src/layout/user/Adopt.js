@@ -28,8 +28,8 @@ const Container = styled.div`
 `;
 
 const HeroImage = styled.div`
-    background-image: url('https://cdn.pixabay.com/photo/2020/05/02/09/59/pup-5120625_1280.jpg');
-    height: 500px; /* Ensure this has px */
+    background-image: url('https://images.unsplash.com/photo-1623387641168-d9803ddd3f35?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    height: 600px; /* Ensure this has px */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

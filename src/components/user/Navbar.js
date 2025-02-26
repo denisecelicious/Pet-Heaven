@@ -20,9 +20,9 @@ const Navbar = () => {
       <Nav ref={navRef}>
         <NavLink to='/adopt'>Adopt</NavLink>
         <NavLink href="/#">Pet Release</NavLink>
-        <NavLink href="/#">About us</NavLink>
-        <NavLink href="/#">Get Started</NavLink>
-        <NavLink href="/#">Contact Us</NavLink>
+        <NavLink to='/about-us'>About Us</NavLink>
+        <NavLink to='/support-us'>Support Us</NavLink>
+        <NavLink href="/#">Membership</NavLink>
         <CloseButton className='nav-btn nav-close-btn' onClick={showNavBar}>
           <ClearIcon />
         </CloseButton>
@@ -126,7 +126,7 @@ const CloseButton = styled.button`
     visibility: visible;
     opacity: 1;
     position: absolute;
-    top: 4rem;
+    top: 2rem;
     right: 2rem;
   }
 `;
