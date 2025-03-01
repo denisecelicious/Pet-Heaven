@@ -29,6 +29,7 @@ const AuthModal = ({ show, handleClose, setIsAuthenticated }) => {
       if (storedUser && storedUser.email === formData.email && storedUser.password === formData.password) {
         Swal.fire("Success!", "Logged in successfully!", "success");
         localStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem("loggedInUser", JSON.stringify(storedUser));
         setIsAuthenticated(true);
         handleClose();
       } else {

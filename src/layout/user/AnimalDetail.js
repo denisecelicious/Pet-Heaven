@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Card, Container, Typography } from "@mui/material";
 import { Form, Button } from "react-bootstrap";
@@ -7,17 +7,35 @@ import Navbar from "../../components/user/Navbar";
 import Swal from "sweetalert2";
 
 const AnimalDetail = () => {
+    // Get animal details from state
+    const { state: animal } = useLocation();
+
     const initialState = {
+        petName: animal?.name || "",   // Store pet name
+        petBreed: animal?.breed || "", // Store pet breed
+        petGender: animal?.gender || "", // Store pet gender
+        petImage: animal?.image || "",
         fullName: "",
         email: "",
         phoneno: "",
         gender: "",
         residence: "",
-        reason: ""
+        reason: "",
     };
 
     // handle store form data
     const [formData, setFormData] = useState(initialState);
+
+    useEffect(() => {
+        if (animal) {
+            setFormData((prev) => ({
+                ...prev,
+                petName: animal.name,
+                petBreed: animal.breed,
+                petGender: animal.gender,
+            }));
+        }
+    }, [animal]);
 
     // handle input changes
     const handleChange = (e) => {
@@ -28,31 +46,32 @@ const AnimalDetail = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const adoptFormID = `ADOPT-${Date.now()}`
+        const adoptFormID = `ADOPT-${Date.now()}`;
+
+        // Add adoptFormID inside formData object
+        const formWithID = { ...formData, adoptFormID };
+
         // Save to localStorage
         const existingAdoptions = JSON.parse(localStorage.getItem("adoptions")) || [];
-        const updatedAdoptions = [...existingAdoptions, formData, adoptFormID];
+        const updatedAdoptions = [...existingAdoptions, formWithID];
+
         localStorage.setItem("adoptions", JSON.stringify(updatedAdoptions));
 
         // SweetAlert Notification
         Swal.fire({
             title: "Success!",
             html: `
-                        <p>Your application has been submitted successfully!</p>
-                        <p><strong>Your Adopt Form ID:</strong> <span id="formID">${adoptFormID}</span></p>
-                        <button id="copyBtn" style="padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 5px; cursor: pointer;">
-                            Copy ID
-                        </button>
-                    `,
+                <p>Your application has been submitted successfully!</p>
+                <p><strong>Your Adopt Form ID:</strong> <span id="formID">${adoptFormID}</span></p>
+                <button id="copyBtn" style="padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 5px; cursor: pointer;">
+                    Copy ID
+                </button>
+            `,
             icon: "success",
             confirmButtonText: "OK",
             didOpen: () => {
-                // Select the copy button after SweetAlert renders
                 document.getElementById("copyBtn").addEventListener("click", () => {
-                    const formIDText = document.getElementById("formID").innerText;
-
-                    // Copy to clipboard
-                    navigator.clipboard.writeText(formIDText).then(() => {
+                    navigator.clipboard.writeText(adoptFormID).then(() => {
                         Swal.fire({
                             title: "Copied!",
                             text: "Adopt Form ID copied to clipboard.",
@@ -65,12 +84,8 @@ const AnimalDetail = () => {
             },
         });
 
-        // Reset form fields after submission
         setFormData(initialState);
     };
-
-    // Get animal details from state
-    const { state: animal } = useLocation();
 
     if (!animal) {
         return <Typography variant="h5">Animal not found</Typography>;

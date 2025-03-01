@@ -11,7 +11,7 @@ const ReleaseForm = () => {
         petImageName: "",
         petName: "",
         gender: "",
-        breed: "",
+        petBreed: "",
         species: "",
         age: "",
         additionalDetails: "",
@@ -42,8 +42,8 @@ const ReleaseForm = () => {
                     petImage: reader.result, // Store image data
                     petImageName: file.name, // Store file name
                 }));
-                localStorage.setItem("petImage", reader.result);
-                localStorage.setItem("petImageName", file.name);
+                //localStorage.setItem("petImage", reader.result);
+                //localStorage.setItem("petImageName", file.name);
             };
             reader.readAsDataURL(file);
         }
@@ -72,7 +72,7 @@ const ReleaseForm = () => {
         // generate unique ID with RF-<timestamp>
         const releaseFormID = `RF-${Date.now()}`;
         // Save form data with the generated ID
-        const formWithID = { ...formData, releaseFormID };
+        const formWithID = { ...formData, releaseFormID};
         localStorage.setItem("releasePetData", JSON.stringify(formWithID));
 
         // SweetAlert Notification
@@ -193,7 +193,7 @@ const ReleaseForm = () => {
 
                     <Form.Group className="mb-2">
                         <Form.Label>Breed</Form.Label>
-                        <Form.Control type="text" name="breed" value={formData.breed} onChange={handleChange} required />
+                        <Form.Control type="text" name="petBreed" value={formData.petBreed} onChange={handleChange} required />
                     </Form.Group>
 
                     <Form.Group className="mb-2">

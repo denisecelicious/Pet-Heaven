@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthModal from '../../layout/user/Auth';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
 
 const Navbar = () => {
   const navRef = useRef();
+  const navigate = useNavigate();
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("isAuthenticated") === "true"
   );
@@ -31,12 +33,22 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const [profileImage, setUserImage] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+    if (storedUser && storedUser.profileImage) {
+      setUserImage(storedUser.profileImage);
+    }
+  }, []);
+
+
   const handleLogout = () => {
     // localStorage.removeItem("isAuthenticated");
     // setIsAuthenticated(false);
     // handleCloseMenu();
     Swal.fire({
-      title: 'Are you you want to logout?',
+      title: 'Are you sure you want to logout?',
       showCancelButton: true,
       confirmButtonText: 'Confirm',
       denyButtonText: 'Cancel',
@@ -44,13 +56,16 @@ const Navbar = () => {
       if (result.isConfirmed) {
         Swal.fire('Logout Successful!', '', 'success')
         localStorage.removeItem("isAuthenticated");
+        sessionStorage.removeItem("loggedInUser")
         setIsAuthenticated(false);
         handleCloseMenu();
+        navigate("/") // navigate to home page
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
       }
     })
   };
+
 
   return (
     <>
@@ -61,9 +76,9 @@ const Navbar = () => {
         <Nav ref={navRef}>
           <NavLink to='/adopt'>Adopt</NavLink>
           <NavLink to='/release'>Release</NavLink>
+          <NavLink to='/check-status'>Check Status</NavLink>
           <NavLink to='/about-us'>About</NavLink>
           <NavLink to='/support-us'>Support</NavLink>
-          <NavLink to='/#'>Contact</NavLink>
           <CloseButton className='nav-btn nav-close-btn' onClick={showNavBar}>
             <ClearIcon />
           </CloseButton>
@@ -75,11 +90,11 @@ const Navbar = () => {
         ) : (
           <>
             <AvatarButton onClick={handleAvatarClick}>
-              <Avatar src={ProfileIcon} alt='Profile' />
+              <Avatar src={profileImage || ProfileIcon} alt='Profile' />
             </AvatarButton>
-            <ProfileMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-              <MenuItem onClick={handleCloseMenu} fontFamily={"Poppins"}>Profile</MenuItem>
-              <MenuItem onClick={handleLogout} fontFamily={"Poppins"}>Logout</MenuItem>
+            <ProfileMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu} style={{ borderRadius: "10px" }}>
+              <MenuItem onClick={() => navigate(`/profile`)} style={{ fontFamily: "Poppins" }}>Profile</MenuItem>
+              <MenuItem onClick={handleLogout} style={{ fontFamily: "Poppins" }}>Logout</MenuItem>
             </ProfileMenu>
           </>
         )}
@@ -149,7 +164,7 @@ const LoginButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   font-family: "Poppins", serif;
-  font-weight: 500;
+  font-weight: 600;
   margin-left: auto;
   margin-right: 20px;
   &:hover {
