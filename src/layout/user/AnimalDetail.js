@@ -28,17 +28,41 @@ const AnimalDetail = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const adoptFormID = `ADOPT-${Date.now()}`
         // Save to localStorage
         const existingAdoptions = JSON.parse(localStorage.getItem("adoptions")) || [];
-        const updatedAdoptions = [...existingAdoptions, formData];
+        const updatedAdoptions = [...existingAdoptions, formData, adoptFormID];
         localStorage.setItem("adoptions", JSON.stringify(updatedAdoptions));
 
         // SweetAlert Notification
         Swal.fire({
             title: "Success!",
-            text: "Your application has been submitted successfully!",
+            html: `
+                        <p>Your application has been submitted successfully!</p>
+                        <p><strong>Your Adopt Form ID:</strong> <span id="formID">${adoptFormID}</span></p>
+                        <button id="copyBtn" style="padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 5px; cursor: pointer;">
+                            Copy ID
+                        </button>
+                    `,
             icon: "success",
             confirmButtonText: "OK",
+            didOpen: () => {
+                // Select the copy button after SweetAlert renders
+                document.getElementById("copyBtn").addEventListener("click", () => {
+                    const formIDText = document.getElementById("formID").innerText;
+
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(formIDText).then(() => {
+                        Swal.fire({
+                            title: "Copied!",
+                            text: "Adopt Form ID copied to clipboard.",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false,
+                        });
+                    });
+                });
+            },
         });
 
         // Reset form fields after submission

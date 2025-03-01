@@ -60,7 +60,7 @@ const Navbar = () => {
         </NavLink>
         <Nav ref={navRef}>
           <NavLink to='/adopt'>Adopt</NavLink>
-          <NavLink to='/#'>Release</NavLink>
+          <NavLink to='/release'>Release</NavLink>
           <NavLink to='/about-us'>About</NavLink>
           <NavLink to='/support-us'>Support</NavLink>
           <NavLink to='/#'>Contact</NavLink>
