@@ -7,6 +7,7 @@ import ProfileIcon from '../../assets/user/profile.png';
 import Accordion from 'react-bootstrap/Accordion';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from "sweetalert2";
+import PendingIcon from '@mui/icons-material/Pending';
 
 const Profile = () => {
 
@@ -19,13 +20,17 @@ const Profile = () => {
     })
 
     const [tempProfileImage, setTempProfileImage] = useState(null);
-
+    const [pendingApplications, setPendingApplications] = useState([]);
 
     // Retrieve user details from sessionStorage
     useEffect(() => {
         const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        const existingAdoptions = JSON.parse(localStorage.getItem("adoptions")) || [];
+
         if (storedUser) {
             setUserDetails(storedUser);
+            const userApplications = existingAdoptions.filter(app => app.email === storedUser.email);
+            setPendingApplications(userApplications);
         }
     }, []);
 
@@ -115,7 +120,37 @@ const Profile = () => {
                         </Col>
                     </Row>
                     <br></br>
-                    <Accordion defaultActiveKey="0">
+                    {/*  show pending adopt applications for user */}
+                    {pendingApplications.length > 0 && (
+                        <div className="mt-4">
+                            <Accordion defaultActiveKey={null}>
+                                {pendingApplications.map((application, index) => (
+                                    <Accordion.Item eventKey={index.toString()} key={index}>
+                                        <Accordion.Header>Pending Applications</Accordion.Header>
+                                        <Accordion.Body>
+                                            <div style={{ display: "flex", alignItems: "left", justifyContent: "left", gap: "8px" }}>
+                                                <PendingIcon style={{ fontSize: "30px", color: "#FFA500" }} />
+                                                <span style={{ color: "#FFA500", fontWeight: "500" }}>Processing application...</span>
+                                            </div>
+                                            <img
+                                                src={application.petImage}
+                                                alt="Pet"
+                                                className="img-fluid rounded mt-2"
+                                                style={{ maxHeight: "300px", objectFit: "cover" }}
+                                            />
+                                            <p></p>
+                                            <p><strong>Application ID:</strong> {application.adoptFormID}</p>
+                                            <p><strong>Name:</strong> {application.petName}</p>
+                                            <p><strong>Breed:</strong> {application.petBreed}</p>
+                                            <p><strong>Gender:</strong> {application.petGender}</p>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                ))}
+                            </Accordion>
+                        </div>
+                    )}
+
+                    <Accordion>
                         <Accordion.Item eventKey="0">
                             <Accordion.Header>Update Profile</Accordion.Header>
                             <Accordion.Body>

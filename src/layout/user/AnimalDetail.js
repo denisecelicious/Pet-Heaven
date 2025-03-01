@@ -27,6 +27,15 @@ const AnimalDetail = () => {
     const [formData, setFormData] = useState(initialState);
 
     useEffect(() => {
+        const storedUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        if (storedUser) {
+            setFormData((prev) => ({
+                ...prev,
+                fullName: storedUser.firstName + " " + storedUser.lastName,
+                email: storedUser.email
+            }));
+        }
+    
         if (animal) {
             setFormData((prev) => ({
                 ...prev,
