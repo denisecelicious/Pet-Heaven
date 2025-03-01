@@ -1,63 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Card, CardMedia, CardContent, Typography, Grid } from "@mui/material";
+import cats from "../../data/CatsData";
 import styled from "styled-components";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Cats = () => {
-    const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const Cats = ({ filters }) => {
+    const navigate = useNavigate();
 
-    const fetchCatImages = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get("https://api.thecatapi.com/v1/images/search?limit=8");
-            setImages(response.data); // API returns an array
-            setLoading(false);
-        } catch (err) {
-            setError("Failed to fetch cat images.");
-            setLoading(false);
-        }
-    };
+    const filterCats = cats.filter((cat) => {
 
-    useEffect(() => {
-        fetchCatImages();
-    }, []);
+        // search filter
+        const matchesSearch = filters.search === "" || cat.name.toLowerCase().includes(filters.search.toLowerCase());
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
+        // Gender filter
+        const matchesGender = filters.gender === "All" || cat.gender === filters.gender;
+
+        return matchesSearch && matchesGender;
+    })
 
     return (
-        <Container>
-            <Title>Cat Gallery</Title>
-            <ImageGrid>
-                {images.map((image) => (
-                    <AnimalImage key={image.id} src={image.url} alt="Cat" />
+        <>
+            <Title><b>Cats</b></Title>
+            <Grid container spacing={3} padding={3}>
+                {filterCats.map((cat) => (
+                    <Grid item xs={12} sm={6} md={4} key={cat.id}>
+                        <Card sx={{
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            "&:hover":{
+                            cursor: "pointer",
+                            transition: "transform 0.3s ease-in-out",
+                            transform: "scale(1.05)"
+                        }}}
+                        onClick={() => navigate(`/animal/${cat.id}`, { state: cat })}
+                        >
+                            <CardMedia component="img" height="400" image={cat.image} alt={cat.name} style={{ objectFit: 'cover' }} />
+                            <CardContent sx={{ flexGrow: 1 }}>
+                                <Typography variant="h6">{cat.name}</Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    <strong>Breed:</strong> {cat.breed}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    <strong>Gender:</strong> {cat.gender}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary">
+                                    <strong>Age:</strong> {cat.age}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {cat.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 ))}
-            </ImageGrid>
-        </Container>
+            </Grid>
+        </>
     );
 };
 
-const Container = styled.div`
-    text-align: center;
-    margin: 20px;
-`;
-
-const Title = styled.h2`
-    font-family: "Poppins", serif;
-`;
-
-const ImageGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-`;
-
-const AnimalImage = styled.img`
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-`;
+const Title = styled.h1`
+    color: #bb7b6b;
+    padding-top: 15px;
+`
 
 export default Cats;

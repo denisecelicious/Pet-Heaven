@@ -1,23 +1,24 @@
 import React from "react";
 import Navbar from "../../components/user/Navbar";
 import styled from "styled-components";
-import AnimalFilter from "../../components/user/AnimalFilter";
+import AnimalFilter from "./AnimalFilter";
+
 
 const Adopt = () => {
     return (
         <Container>
             <Navbar />
             <HeroImage />
-            <br/>
             <InfoContainer>
                 <Title>Adoption Gallery</Title>
                 <Description>
-                    Thank you for your interest in adopting an animal!
+                    Adopting a pet means giving an animal a second chance at a loving home by bringing them into your family
+                    from Pet Heaven Society, providing them with a safe, loving and caring environment. 
                 </Description>
                 <Description>
-                    Find your Furry Friend today!
+                    Make a difference and find your furry friend today!
                 </Description>
-                <AnimalFilter/>
+                <AnimalFilter />
             </InfoContainer>
         </Container>
     )
@@ -38,7 +39,7 @@ const HeroImage = styled.div`
 
 const InfoContainer = styled.div`
     flex: 0.5;
-    padding: 0px 50px;
+    padding: 30px 50px;
     text-align: center;
 `;
 
@@ -47,7 +48,7 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-    font-weight: bold;
+    color: #808080;
 `;
 
 

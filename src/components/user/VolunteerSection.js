@@ -165,7 +165,7 @@ const VolunteerSection = () => {
                     </Form.Group>
 
                     {/* Submit Button */}
-                    <Button variant="warning" type="submit">
+                    <Button variant="warning" type="submit" style={{ fontFamily: "Poppins", fontWeight: "500"}}>
                         Apply to Volunteer
                     </Button>
                 </Form>

@@ -23,7 +23,7 @@ const DonateSection = () => {
                     image={Paynow}
                     alt="PayNow"
                 />
-                <CardContent sx={{ flex: '1 0 auto' }}>
+                <CardContent sx={{ flex: 'auto' }}>
                     <Typography
                         component="div"
                         variant="h5"
@@ -49,11 +49,11 @@ const DonateSection = () => {
             <Card sx={{ display: 'flex' }}>
                 <CardMedia
                     component="img"
-                    sx={{ width: 150 }}
+                    sx={{ width: 180, objectFit: "contain" }}
                     image={CashIcon}
                     alt="Cash"
                 />
-                <CardContent sx={{ flex: '1 0 auto' }}>
+                <CardContent sx={{ flex: 'auto' }}>
                     <Typography
                         component="div"
                         variant="h5"
@@ -82,11 +82,11 @@ const DonateSection = () => {
             <Card sx={{ display: 'flex' }}>
                 <CardMedia
                     component="img"
-                    sx={{ width: 150 }}
+                    sx={{ width: 250, objectFit: "contain" }}
                     image={ChequeIcon}
                     alt="Cheque"
                 />
-                <CardContent sx={{ flex: '1 0 auto' }}>
+                <CardContent sx={{ flex: 'auto' }}>
                     <Typography
                         component="div"
                         variant="h5"
@@ -117,6 +117,10 @@ const Wrapper = styled.div`
     font-family: "Poppins", serif;
     width: 60%;
     margin: auto;
+    @media only screen and (max-width: 768px) {
+        width: fit-content;
+        
+  }
 `;
 
 const Title = styled.h2`
