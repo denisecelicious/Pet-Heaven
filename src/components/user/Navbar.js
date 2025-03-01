@@ -79,6 +79,7 @@ const Navbar = () => {
           <NavLink to='/check-status'>Check Status</NavLink>
           <NavLink to='/about-us'>About</NavLink>
           <NavLink to='/support-us'>Support</NavLink>
+          <NavLink to='/contact'>Contact</NavLink>
           <CloseButton className='nav-btn nav-close-btn' onClick={showNavBar}>
             <ClearIcon />
           </CloseButton>

@@ -8,6 +8,7 @@ import AnimalDetail from './layout/user/AnimalDetail';
 import Release from './layout/user/Release';
 import CheckStatus from './layout/user/CheckStatus';
 import Profile from './layout/user/Profile';
+import Contact from './layout/user/Contact';
 
 
 
@@ -20,6 +21,7 @@ const App = () => {
       <Route path="/adopt" element={<Adopt />} />
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/support-us" element={<SupportUs />} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="/release" element={<Release />} />
       <Route path="/check-status" element={<CheckStatus />} />
       <Route path="/animal/:id" element={<AnimalDetail />} />
