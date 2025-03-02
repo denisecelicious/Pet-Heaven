@@ -8,6 +8,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from "sweetalert2";
 import PendingIcon from '@mui/icons-material/Pending';
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
 
@@ -70,6 +71,8 @@ const Profile = () => {
     //     setUserDetails({ ...userDetails, profileImage: null });
     // };
 
+    const navigate = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -90,7 +93,7 @@ const Profile = () => {
                         ...userDetails,
                         profileImage: tempProfileImage
                     }));
-                    window.location.reload();
+                    navigate("/profile")
                 });
             } else if (result.isDenied) {
                 Swal.fire('Changes are not saved', '', 'info');
