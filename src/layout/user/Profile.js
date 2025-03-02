@@ -8,7 +8,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from "sweetalert2";
 import PendingIcon from '@mui/icons-material/Pending';
-import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
 
@@ -71,11 +70,9 @@ const Profile = () => {
     //     setUserDetails({ ...userDetails, profileImage: null });
     // };
 
-    const navigate = useNavigate();
-
     const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         Swal.fire({
             title: 'Are you sure you want to update your profile?',
             showCancelButton: true,
@@ -83,23 +80,28 @@ const Profile = () => {
             denyButtonText: 'Cancel',
         }).then((result) => {
             if (result.isConfirmed) {
-                setUserDetails(prev => ({
-                    ...prev,
-                    profileImage: tempProfileImage // Only update the real profileImage now
-                }));
-
+                // Update user details state
+                setUserDetails(prev => {
+                    const updatedDetails = {
+                        ...prev,
+                        profileImage: tempProfileImage // Update only the profile image
+                    };
+    
+                    // Store updated user details in session storage
+                    sessionStorage.setItem("loggedInUser", JSON.stringify(updatedDetails));
+    
+                    return updatedDetails; // Ensure state is updated properly
+                });
+    
                 Swal.fire('Profile Updated!', '', 'success').then(() => {
-                    sessionStorage.setItem("loggedInUser", JSON.stringify({
-                        ...userDetails,
-                        profileImage: tempProfileImage
-                    }));
-                    navigate("/profile")
+                    window.location.reload(); // Refresh after successful update
                 });
             } else if (result.isDenied) {
                 Swal.fire('Changes are not saved', '', 'info');
             }
         });
     };
+    
 
 
 
